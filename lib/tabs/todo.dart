@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:focused_menu/focused_menu.dart';
-import 'package:focused_menu/modals.dart';
 import 'package:jei_project_manager_app/models/Task.dart';
+import 'package:focused_menu/modals.dart';
 
 
 
