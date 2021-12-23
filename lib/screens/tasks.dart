@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:project/tabs/doing.dart';
-import 'package:project/tabs/done.dart';
-import 'package:project/tabs/todo.dart';
+import 'package:jei_project_manager_app/tabs/doing.dart';
+import 'package:jei_project_manager_app/tabs/done.dart';
+import 'package:jei_project_manager_app/tabs/todo.dart';
+
 
 
 class TasksPage extends StatelessWidget {

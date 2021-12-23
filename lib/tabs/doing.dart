@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project/models/Task.dart';
+import 'package:jei_project_manager_app/models/Task.dart';
+
 
 
 class doing extends StatefulWidget {
