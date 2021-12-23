@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:jei_project_manager_app/tabs/doing.dart';
-import 'package:jei_project_manager_app/tabs/todo.dart';
-import 'package:jei_project_manager_app/tabs/done.dart';
-
+import 'package:jei_project_manager_app/models/Task.dart';
+import 'package:jei_project_manager_app/widgets/TaskTab.dart';
 
 
 class TasksPage extends StatelessWidget {
-  const TasksPage({Key? key}) : super(key: key);
+  TasksPage({Key? key}) : super(key: key);
 
+  List<Task> data = [
+  Task(name: 'task1', project: "project", description: "description", deadline: "deadline"),
+  Task(name: 'task2', project: "project", description: "description", deadline: "deadline"),
+  Task(name: 'task3', project: "project", description: "description", deadline: "deadline"),
+];
   @override
   Widget build(BuildContext context) =>DefaultTabController(length: 3, child: Scaffold(
     appBar: AppBar(
@@ -28,9 +31,9 @@ class TasksPage extends StatelessWidget {
     ),
     body: TabBarView(
       children: [
-        todo(),
-        doing(),
-        done(),
+        TaskTab(tasks: data, location: 'to do', moveToStatus: ['doing','done'],),
+        TaskTab(tasks: data, location: 'doing', moveToStatus: ['to do','done'],),
+        TaskTab(tasks: data, location: 'done', moveToStatus: ['to do','doing'],),
       ],
     ),
     ),
