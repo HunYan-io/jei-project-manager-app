@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 
-class TextW extends StatelessWidget {
+class TextFieldWidget extends StatelessWidget {
 
   late String text;
   late double size;
-  TextW(this.text,this.size);
+  TextFieldWidget(this.text,this.size);
 
   @override
   Widget build(BuildContext context) {
@@ -18,4 +18,5 @@ class TextW extends StatelessWidget {
     );
   }
 }
+
 

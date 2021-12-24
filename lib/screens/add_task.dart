@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
+import 'package:jei_project_manager_app/widgets/text_field_widget.dart';
 
-import 'Models/TextWidget.dart';
-class AddProjectScreen extends StatefulWidget {
-  const AddProjectScreen({Key? key}) : super(key: key);
+
+
+class AddTaskScreen extends StatefulWidget {
+  const AddTaskScreen({Key? key}) : super(key: key);
+
 
   @override
-  _AddProjectScreenState createState() => _AddProjectScreenState();
+  _AddTaskScreenState createState() => _AddTaskScreenState();
 }
 
-class _AddProjectScreenState extends State<AddProjectScreen> {
+class _AddTaskScreenState extends State<AddTaskScreen> {
   @override
   final nameController = TextEditingController();
   final typeController = TextEditingController();
@@ -24,7 +24,7 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
 
   String? value;
   DropdownMenuItem<String> buildMenuItem(String item) =>
-      DropdownMenuItem(value: item, child:TextW(item,15),);
+      DropdownMenuItem(value: item, child:TextFieldWidget(item,15),);
   DateTime selectedDate = DateTime.now();
 
   Future<void> _selectDate(BuildContext context) async {
@@ -38,11 +38,10 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
         selectedDate = picked;
       });
   }
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: TextW("Add project", 30),
+        title: TextFieldWidget("Add task", 30),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -52,14 +51,14 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Scrollbar(
-
+                isAlwaysShown: true,
                 showTrackOnHover: true,
                 child: ListView(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   padding: EdgeInsets.all(8),
                   children: [
-                    TextW("Name : ", 20),
+                    TextFieldWidget("Name : ", 20),
                     Padding(
                       padding: const EdgeInsets.all(16),
                       child: TextField(
@@ -77,39 +76,7 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
                         textInputAction: TextInputAction.done,
                       ),
                     ),
-                    TextW("Type : ", 20),
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12,vertical: 4),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: Color(0xFF171a33),width: 1,)
-
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            isExpanded:true,
-                            value: value,
-                            items: items.map(buildMenuItem).toList(),
-                            onChanged: (value)=> setState(()=>this.value=value),
-                            iconSize: 36,
-                            icon: Icon(Icons.arrow_drop_down,color: Color(0xFF171a33),),
-
-                          ),
-                        ),
-                      ),
-                    ),
-                    TextW("Description : ", 20),
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: TextFormField(
-                        maxLines: 3,
-                        controller: descriptionController,
-                        textInputAction: TextInputAction.done,
-                      ),
-                    ),
-                    TextW("Members : ", 20),
+                    TextFieldWidget("Project : ", 20),
                     Padding(
                       padding: const EdgeInsets.all(16),
                       child: TextField(
@@ -127,7 +94,18 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
                         textInputAction: TextInputAction.done,
                       ),
                     ),
-                    TextW("Deadline : ", 20),
+
+                    TextFieldWidget("Description : ", 20),
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: TextFormField(
+                        maxLines: 3,
+                        controller: descriptionController,
+                        textInputAction: TextInputAction.done,
+                      ),
+                    ),
+
+                    TextFieldWidget("Deadline : ", 20),
                     Padding(
                       padding: const EdgeInsets.all(16),
                       child: Container(
@@ -188,5 +166,3 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
     );
   }
 }
-
-

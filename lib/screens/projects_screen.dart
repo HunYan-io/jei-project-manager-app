@@ -1,18 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jei_project_manager_app/models/project.dart';
 
-import 'Models/project.dart';
+
 
 class ProjectScreen extends StatelessWidget {
   ProjectScreen({Key? key}) : super(key: key);
-  List<project> projects = [
-    project(
+  List<Project> projects = [
+    Project(
         name: "projet1",
         type: "type1",
         description: "description",
         members: "members",
         deadline: DateTime.now()),
-    project(
+    Project(
         name: "projet2",
         type: "type1",
         description: "description",

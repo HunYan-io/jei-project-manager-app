@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:jei_project_manager_app/projectsScreen.dart';
 
-import 'AddProject.dart';
-import 'AddTask.dart';
-import 'my_input_theme.dart';
+import 'package:jei_project_manager_app/screens/add_project.dart';
+
+
+import 'models/my_input_theme.dart';
+
 
 void main() {
   runApp(const MyApp());
