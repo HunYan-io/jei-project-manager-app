@@ -39,6 +39,8 @@ class AuthService {
       _storage
           .write(key: "is_admin", value: isAdmin ? "true" : "false")
           .catchError((e) {});
+      httpService
+          .addHeaders({HttpHeaders.authorizationHeader: 'Bearer $_token'});
     } else {
       throw Exception(data["message"]);
     }
@@ -58,6 +60,8 @@ class AuthService {
       _storage
           .write(key: "is_admin", value: isAdmin ? "true" : "false")
           .catchError((e) {});
+      httpService
+          .addHeaders({HttpHeaders.authorizationHeader: 'Bearer $_token'});
     } else {
       throw Exception(data["message"]);
     }

@@ -1,3 +1,3 @@
 class Config {
-  static const apiURL = "http://localhost:3000";
+  static const apiURL = "https://jei-app-api.herokuapp.com";
 }
