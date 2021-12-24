@@ -1,29 +1,57 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:jei_project_manager_app/screens/add_project_screen.dart';
+import 'package:jei_project_manager_app/screens/projects_screen.dart';
 
-import 'package:jei_project_manager_app/screens/add_project.dart';
+import 'package:jei_project_manager_app/screens/signup_screen.dart';
+import 'package:jei_project_manager_app/services/auth_service.dart';
+import 'package:jei_project_manager_app/utilities/theme.dart';
+import 'package:jei_project_manager_app/screens/login_screen.dart';
 
-
-import 'models/my_input_theme.dart';
-
-
-void main() {
-  runApp(const MyApp());
+void main() async {
+  runApp(DevicePreview(
+    enabled: true,
+    builder: (context) => MyApp(), // Wrap your app
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+
+  final _authInit = authService.init();
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        inputDecorationTheme: MyInputTheme().theme(),
+      useInheritedMediaQuery: true,
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
+      title: 'JEI Project Manager',
+      theme: AppTheme.lightTheme,
+      home: FutureBuilder(
+        future: _authInit,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return authService.isLoggedIn
+                ? ProjectsScreen()
+                : const LoginScreen();
+          } else if (snapshot.hasError) {
+            return const LoginScreen();
+          } else {
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+        },
       ),
-
-      home:AddProjectScreen(),
+      routes: {
+        '/login': (context) => const LoginScreen(),
+        '/signup': (context) => const SignupScreen(),
+        '/projects': (context) => ProjectsScreen(),
+        '/projects/add': (context) => const AddProjectScreen()
+      },
     );
   }
 }
-

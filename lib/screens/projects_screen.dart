@@ -1,11 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jei_project_manager_app/models/project.dart';
 
-
-
-class ProjectScreen extends StatelessWidget {
-  ProjectScreen({Key? key}) : super(key: key);
+class ProjectsScreen extends StatelessWidget {
+  ProjectsScreen({Key? key}) : super(key: key);
   List<Project> projects = [
     Project(
         name: "projet1",
@@ -79,7 +76,9 @@ class ProjectScreen extends StatelessWidget {
                     width: 0,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed("/projects/add");
+                },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
