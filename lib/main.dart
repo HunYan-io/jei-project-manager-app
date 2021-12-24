@@ -2,6 +2,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 
 import 'package:jei_project_manager_app/screens/signup_screen.dart';
+import 'package:jei_project_manager_app/screens/tasks_screen.dart';
 import 'package:jei_project_manager_app/services/auth_service.dart';
 import 'package:jei_project_manager_app/utilities/theme.dart';
 import 'package:jei_project_manager_app/screens/login_screen.dart';
@@ -46,7 +47,8 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/login': (context) => const LoginScreen(),
-        '/signup': (context) => const SignupScreen()
+        '/signup': (context) => const SignupScreen(),
+        '/tasks': (context) => TasksScreen()
       },
     );
   }

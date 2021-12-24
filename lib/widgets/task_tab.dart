@@ -3,28 +3,31 @@ import 'package:focused_menu/focused_menu.dart';
 import 'package:jei_project_manager_app/models/Task.dart';
 import 'package:focused_menu/modals.dart';
 
-
-
-
-
 class TaskTab extends StatefulWidget {
   List<Task> tasks;
-  String location='';
+  String location = '';
   List<String> moveToStatus;
-  TaskTab({Key? key,required this.tasks,required this.location,required this.moveToStatus}) : super(key: key);
-
+  TaskTab(
+      {Key? key,
+      required this.tasks,
+      required this.location,
+      required this.moveToStatus})
+      : super(key: key);
 
   @override
-  _doneState createState() => _doneState();
+  _taskTabState createState() => _taskTabState();
 }
 
-class _doneState extends State<TaskTab> {
-  Task input= Task(name: '', project: "project", description: "description", deadline: "deadline");
-
+class _taskTabState extends State<TaskTab> {
+  Task input = Task(
+      name: '',
+      project: "project",
+      description: "description",
+      deadline: "deadline");
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       floatingActionButton: ElevatedButton(
         style: ElevatedButton.styleFrom(
           minimumSize: Size(90, 30),
@@ -35,7 +38,6 @@ class _doneState extends State<TaskTab> {
             width: 0,
           ),
         ),
-
         onPressed: () {
           showDialog(
               context: context,
@@ -51,7 +53,6 @@ class _doneState extends State<TaskTab> {
                   ),
                   actions: <Widget>[
                     TextButton(
-
                         onPressed: () {
                           setState(() {
                             widget.tasks.add(input);
@@ -70,35 +71,35 @@ class _doneState extends State<TaskTab> {
           ),
         ),
       ),
-      body: ListView.builder(itemCount: widget.tasks.length,itemBuilder: (BuildContext context, int index){
-        return FocusedMenuHolder(
-          onPressed: (){},
-          menuWidth: MediaQuery.of(context).size.width*0.3,
-          menuItems: <FocusedMenuItem>[
-            for (var statusName in widget.moveToStatus) FocusedMenuItem(title: Text('move to $statusName'), onPressed: (){
-              print(statusName);
-            })
-
-          ],
-          child: Card(
-              child: ListTile(title: Text(widget.tasks[index].name),
-                  trailing: IconButton(
-                      icon: Icon(
-                        Icons.close,
-                        color: Color(0xff8a2831),
-                      ),
+      body: ListView.builder(
+          itemCount: widget.tasks.length,
+          itemBuilder: (BuildContext context, int index) {
+            return FocusedMenuHolder(
+              onPressed: () {},
+              menuWidth: MediaQuery.of(context).size.width * 0.3,
+              menuItems: <FocusedMenuItem>[
+                for (var statusName in widget.moveToStatus)
+                  FocusedMenuItem(
+                      title: Text('move to $statusName'),
                       onPressed: () {
-                        setState((){
-                          widget.tasks.removeAt(index);
-                        }
-                        );
-                      }
-                  )
-              )
-          ),
-        );
-      }
-      ),
+                        print(statusName);
+                      })
+              ],
+              child: Card(
+                  child: ListTile(
+                      title: Text(widget.tasks[index].name),
+                      trailing: IconButton(
+                          icon: Icon(
+                            Icons.close,
+                            color: Color(0xff8a2831),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              widget.tasks.removeAt(index);
+                            });
+                          }))),
+            );
+          }),
     );
   }
 }
