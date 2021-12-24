@@ -7,21 +7,21 @@ import 'package:focused_menu/modals.dart';
 
 
 
-class todo extends StatefulWidget {
-  todo({Key? key}) : super(key: key);
+class TaskTab extends StatefulWidget {
+  List<Task> tasks;
+  String location='';
+  List<String> moveToStatus;
+  TaskTab({Key? key,required this.tasks,required this.location,required this.moveToStatus}) : super(key: key);
 
 
   @override
   _doneState createState() => _doneState();
 }
 
-class _doneState extends State<todo> {
+class _doneState extends State<TaskTab> {
   Task input= Task(name: '', project: "project", description: "description", deadline: "deadline");
-  List<Task> todos = [
-    Task(name: 'task1', project: "project", description: "description", deadline: "deadline"),
-    Task(name: 'task2', project: "project", description: "description", deadline: "deadline"),
-    Task(name: 'task3', project: "project", description: "description", deadline: "deadline"),
-  ];
+
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -54,7 +54,7 @@ class _doneState extends State<todo> {
 
                         onPressed: () {
                           setState(() {
-                            todos.add(input);
+                            widget.tasks.add(input);
                           });
                         },
                         child: Text("Add"))
@@ -70,16 +70,18 @@ class _doneState extends State<todo> {
           ),
         ),
       ),
-      body: ListView.builder(itemCount: todos.length,itemBuilder: (BuildContext context, int index){
+      body: ListView.builder(itemCount: widget.tasks.length,itemBuilder: (BuildContext context, int index){
         return FocusedMenuHolder(
           onPressed: (){},
           menuWidth: MediaQuery.of(context).size.width*0.3,
           menuItems: <FocusedMenuItem>[
-            FocusedMenuItem(title: Text('move to doing'), onPressed: (){}),
-            FocusedMenuItem(title: Text('move to done'), onPressed: (){})
+            for (var statusName in widget.moveToStatus) FocusedMenuItem(title: Text('move to $statusName'), onPressed: (){
+              print(statusName);
+            })
+
           ],
           child: Card(
-              child: ListTile(title: Text(todos[index].name),
+              child: ListTile(title: Text(widget.tasks[index].name),
                   trailing: IconButton(
                       icon: Icon(
                         Icons.close,
@@ -87,7 +89,7 @@ class _doneState extends State<todo> {
                       ),
                       onPressed: () {
                         setState((){
-                          todos.removeAt(index);
+                          widget.tasks.removeAt(index);
                         }
                         );
                       }
