@@ -1,6 +1,8 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 
+import 'package:jei_project_manager_app/screens/add_project_screen.dart';
+import 'package:jei_project_manager_app/screens/projects_screen.dart';
 import 'package:jei_project_manager_app/screens/signup_screen.dart';
 import 'package:jei_project_manager_app/screens/tasks_screen.dart';
 import 'package:jei_project_manager_app/services/auth_service.dart';
@@ -32,7 +34,7 @@ class MyApp extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return authService.isLoggedIn
-                ? Container(/* Projects Screen */)
+                ? ProjectsScreen()
                 : const LoginScreen();
           } else if (snapshot.hasError) {
             return const LoginScreen();
@@ -49,6 +51,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginScreen(),
         '/signup': (context) => const SignupScreen(),
         '/tasks': (context) => TasksScreen()
+        '/projects': (context) => ProjectsScreen(),
+        '/projects/add': (context) => const AddProjectScreen()
       },
     );
   }
