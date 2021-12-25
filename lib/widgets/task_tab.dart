@@ -4,6 +4,7 @@ import 'package:jei_project_manager_app/models/Task.dart';
 import 'package:focused_menu/modals.dart';
 
 class TaskTab extends StatefulWidget {
+  bool admin = false;
   List<Task> tasks;
   String location = '';
   List<String> moveToStatus;
@@ -11,7 +12,9 @@ class TaskTab extends StatefulWidget {
       {Key? key,
       required this.tasks,
       required this.location,
-      required this.moveToStatus})
+      required this.moveToStatus,
+      required this.admin,
+      })
       : super(key: key);
 
   @override
@@ -28,7 +31,8 @@ class _taskTabState extends State<TaskTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: ElevatedButton(
+
+      floatingActionButton:widget.admin ? ElevatedButton(
         style: ElevatedButton.styleFrom(
           minimumSize: Size(90, 30),
           primary: Color(0xFF8a2831),
@@ -70,35 +74,60 @@ class _taskTabState extends State<TaskTab> {
             style: TextStyle(fontSize: 20),
           ),
         ),
-      ),
+      ):null,
+
       body: ListView.builder(
           itemCount: widget.tasks.length,
           itemBuilder: (BuildContext context, int index) {
-            return FocusedMenuHolder(
-              onPressed: () {},
-              menuWidth: MediaQuery.of(context).size.width * 0.3,
-              menuItems: <FocusedMenuItem>[
-                for (var statusName in widget.moveToStatus)
-                  FocusedMenuItem(
-                      title: Text('move to $statusName'),
-                      onPressed: () {
-                        print(statusName);
-                      })
-              ],
-              child: Card(
-                  child: ListTile(
-                      title: Text(widget.tasks[index].name),
-                      trailing: IconButton(
-                          icon: Icon(
-                            Icons.close,
-                            color: Color(0xff8a2831),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              widget.tasks.removeAt(index);
-                            });
-                          }))),
-            );
+            if(widget.admin)
+            {
+              return FocusedMenuHolder(
+                onPressed: () {},
+                menuWidth: MediaQuery.of(context).size.width * 0.3,
+                menuItems: <FocusedMenuItem>[
+                  for (var statusName in widget.moveToStatus)
+                    FocusedMenuItem(
+                        title: Text('move to $statusName'),
+                        onPressed: () {
+                          print(statusName);
+                        })
+                ],
+                child: Card(
+                    child: ListTile(
+                        title: Text(widget.tasks[index].name),
+                        trailing:
+                        IconButton(
+                            icon: Icon(
+                              Icons.close,
+                              color: Color(0xff8a2831),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                widget.tasks.removeAt(index);
+                              });
+                            }))),
+              );
+
+            }
+            else{
+              return FocusedMenuHolder(
+                onPressed: () {},
+                menuWidth: MediaQuery.of(context).size.width * 0.3,
+                menuItems: <FocusedMenuItem>[
+                  for (var statusName in widget.moveToStatus)
+                    FocusedMenuItem(
+                        title: Text('move to $statusName'),
+                        onPressed: () {
+                          print(statusName);
+                        })
+                ],
+                child: Card(
+                    child: ListTile(
+                        title: Text(widget.tasks[index].name),
+                        )
+                ),
+              );
+            }
           }),
     );
   }

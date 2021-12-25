@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jei_project_manager_app/models/Task.dart';
+import 'package:jei_project_manager_app/services/auth_service.dart';
 import 'package:jei_project_manager_app/widgets/task_tab.dart';
 
 class TasksScreen extends StatelessWidget {
@@ -50,16 +51,19 @@ class TasksScreen extends StatelessWidget {
                 tasks: data,
                 location: 'to do',
                 moveToStatus: ['doing', 'done'],
+                admin: authService.isAdmin,
               ),
               TaskTab(
                 tasks: data,
                 location: 'doing',
                 moveToStatus: ['to do', 'done'],
+                admin: authService.isAdmin,
               ),
               TaskTab(
                 tasks: data,
                 location: 'done',
                 moveToStatus: ['to do', 'doing'],
+                admin: authService.isAdmin,
               ),
             ],
           ),

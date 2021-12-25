@@ -82,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
     authService
         .login(_usernameController.text, _passwordController.text)
         .then((_) {
-      Navigator.of(context).pushReplacementNamed("/projects");
+      Navigator.of(context).pushReplacementNamed("/tasks");
     }).catchError((e) {
       switch (e.message) {
         case "invalid_username":
