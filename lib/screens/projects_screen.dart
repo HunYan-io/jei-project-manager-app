@@ -5,17 +5,19 @@ class ProjectsScreen extends StatelessWidget {
   ProjectsScreen({Key? key}) : super(key: key);
   List<Project> projects = [
     Project(
-        name: "projet1",
-        type: "type1",
-        description: "description",
-        members: "members",
-        deadline: DateTime.now()),
+      name: "projet1",
+      type: "type1",
+      description: "description",
+      members: ["members"],
+      deadline: DateTime.now(),
+    ),
     Project(
-        name: "projet2",
-        type: "type1",
-        description: "description",
-        members: "members",
-        deadline: DateTime.now()),
+      name: "projet2",
+      type: "type1",
+      description: "description",
+      members: ["members"],
+      deadline: DateTime.now(),
+    ),
   ];
 
   @override
