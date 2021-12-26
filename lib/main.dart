@@ -1,67 +1,59 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'package:jei_project_manager_app/screens/add_project_screen.dart';
+import 'package:jei_project_manager_app/screens/projects_screen.dart';
+import 'package:jei_project_manager_app/screens/signup_screen.dart';
+import 'package:jei_project_manager_app/screens/tasks_screen.dart';
+import 'package:jei_project_manager_app/services/auth_service.dart';
+import 'package:jei_project_manager_app/utilities/theme.dart';
+import 'package:jei_project_manager_app/screens/login_screen.dart';
+
+void main() async {
+  runApp(DevicePreview(
+    enabled: true,
+    builder: (context) => MyApp(), // Wrap your app
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+
+  final _authInit = authService.init();
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      useInheritedMediaQuery: true,
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
+      title: 'JEI Project Manager',
+      theme: AppTheme.lightTheme,
+      home: FutureBuilder(
+        future: _authInit,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return authService.isLoggedIn
+                ? ProjectsScreen()
+                : const LoginScreen();
+          } else if (snapshot.hasError) {
+            return const LoginScreen();
+          } else {
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+        },
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      routes: {
+        '/login': (context) => const LoginScreen(),
+        '/signup': (context) => const SignupScreen(),
+        '/tasks': (context) => TasksScreen()
+        '/projects': (context) => ProjectsScreen(),
+        '/projects/add': (context) => const AddProjectScreen()
+      },
     );
   }
 }
