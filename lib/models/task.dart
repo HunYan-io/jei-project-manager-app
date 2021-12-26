@@ -1,7 +1,7 @@
 class Task {
   final int? id;
   final String name;
-  final String project;
+  final int project;
   final String description;
   final DateTime deadline;
   final String status;
@@ -17,7 +17,7 @@ class Task {
   factory Task.fromJson(Map<String, dynamic> task) => Task(
       id: task["id"],
       name: task["name"],
-      project: task["project"],
+      project: task["projectId"],
       description: task["description"],
       deadline: DateTime.parse(task["deadline"]),
       status: task["task"]);

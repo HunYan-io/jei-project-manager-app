@@ -18,9 +18,10 @@ class TaskServices {
     }
   }
 
-  Future<bool> postTask(Task task, int id) async {
+  Future<bool> postTask(Task task) async {
     final response = await httpService.post(
-      Uri.parse(Config.apiURL + "/projects/$id/tasks"),
+      Uri.parse(
+          Config.apiURL + "/projects/" + task.project.toString() + "/tasks"),
       body: json.encode(task.toJson()),
     );
     final data = json.decode(response.body) as Map<String, dynamic>;
