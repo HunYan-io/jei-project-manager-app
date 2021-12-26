@@ -31,7 +31,7 @@ class Task {
       "status": status
     };
     if (id != null) {
-      task["id"] = id! as String;
+      task["id"] = id!;
     }
     return task;
   }
