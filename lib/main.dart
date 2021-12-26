@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
       builder: DevicePreview.appBuilder,
       title: 'JEI Project Manager',
       theme: AppTheme.lightTheme,
+
       home: FutureBuilder(
         future: _authInit,
         builder: (context, snapshot) {
@@ -50,7 +51,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginScreen(),
         '/signup': (context) => const SignupScreen(),
-        '/tasks': (context) => TasksScreen()
+        '/tasks': (context) => TasksScreen(),
         '/projects': (context) => ProjectsScreen(),
         '/projects/add': (context) => const AddProjectScreen()
       },

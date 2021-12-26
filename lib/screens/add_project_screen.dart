@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:jei_project_manager_app/models/project.dart';
+import 'package:jei_project_manager_app/services/projects_service.dart';
 import 'package:jei_project_manager_app/widgets/input_theme_provider.dart';
 import 'package:jei_project_manager_app/widgets/text_field_widget.dart';
 
@@ -16,10 +18,11 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
   final descriptionController = TextEditingController();
   final membersController = TextEditingController();
   final deadlineController = TextEditingController();
-  final items = ["Web", "Mobile", "Référencement"];
+  final items = ["Développement Web", "Développement Mobile", "Référencement Web"];
   final itemsSelected = TextEditingController();
 
   String? value;
+
   DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
         value: item,
         child: TextFieldWidget(item, 15),
@@ -180,7 +183,25 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
                       width: 0.5,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    print(
+                      nameController.text
+                    );
+                    print(value);
+                    print(descriptionController.text.split(","),);
+                    print(membersController.text,);
+                   print(deadlineController.text);
+                    Project project = Project(
+                      name: nameController.text,
+                      type: typeController.text,
+                      description: descriptionController.text,
+                      members: membersController.text.split(","),
+                      deadline: DateTime.parse(deadlineController.text),
+                    );
+                    ProjectsService.postProject(project);
+                    Navigator.of(context).pop();
+
+                  },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
