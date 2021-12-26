@@ -25,7 +25,6 @@ class Task {
   Map<String, dynamic> toJson() {
     final task = {
       "name": name,
-      "project": project,
       "description": description,
       "deadline": deadline.toString(),
       "status": status
