@@ -18,8 +18,8 @@ class ProjectsService {
     }
   }
 
- static Future<bool> postProject(Project project) async {
-     final response = await httpService.post(
+  static Future<bool> postProject(Project project) async {
+    final response = await httpService.post(
       Uri.parse(Config.apiURL + "/projects"),
       body: json.encode(project.toJson()),
     );
@@ -43,5 +43,3 @@ class ProjectsService {
     }
   }
 }
-
-final projectsService = ProjectsService();

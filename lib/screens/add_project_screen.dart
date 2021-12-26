@@ -18,7 +18,11 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
   final descriptionController = TextEditingController();
   final membersController = TextEditingController();
   final deadlineController = TextEditingController();
-  final items = ["Développement Web", "Développement Mobile", "Référencement Web"];
+  final items = [
+    "Développement Web",
+    "Développement Mobile",
+    "Référencement Web"
+  ];
   final itemsSelected = TextEditingController();
 
   String? value;
@@ -184,23 +188,16 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
                     ),
                   ),
                   onPressed: () {
-                    print(
-                      nameController.text
-                    );
-                    print(value);
-                    print(descriptionController.text.split(","),);
-                    print(membersController.text,);
-                   print(deadlineController.text);
                     Project project = Project(
                       name: nameController.text,
-                      type: typeController.text,
+                      type: value!,
                       description: descriptionController.text,
                       members: membersController.text.split(","),
-                      deadline: DateTime.parse(deadlineController.text),
+                      deadline: selectedDate,
                     );
-                    ProjectsService.postProject(project);
-                    Navigator.of(context).pop();
-
+                    ProjectsService.postProject(project).then((_) {
+                      Navigator.of(context).pop();
+                    });
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),

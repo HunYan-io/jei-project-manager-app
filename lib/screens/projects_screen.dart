@@ -11,7 +11,6 @@ class ProjectsScreen extends StatefulWidget {
 }
 
 class _ProjectsScreenState extends State<ProjectsScreen> {
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -33,33 +32,33 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
           future: ProjectsService.getProjects(),
           builder:
               (BuildContext context, AsyncSnapshot<List<Project>> snapshot) {
-            return Column(
-              children: [
-                Container(
-                  child: Scrollbar(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: Card(
-                            child: ListTile(
-                              trailing: IconButton(
-                                  onPressed: () {
-                                    ProjectsService.deleteProject(
-                                        snapshot.data![index].id!)
-                                        .then((value) {
-                                      setState(() {});
-                                    });
-                                  },
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: Color(0xFF171a33),
-                                    size: 20,
-                                  )),
-
+            if (snapshot.hasData) {
+              return Column(
+                children: [
+                  Container(
+                    child: Scrollbar(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Card(
+                              child: ListTile(
+                                trailing: IconButton(
+                                    onPressed: () {
+                                      ProjectsService.deleteProject(
+                                              snapshot.data![index].id!)
+                                          .then((value) {
+                                        setState(() {});
+                                      });
+                                    },
+                                    icon: Icon(
+                                      Icons.delete,
+                                      color: Color(0xFF171a33),
+                                      size: 20,
+                                    )),
                                 onTap: () => Navigator.of(context)
                                     .push(
                                   MaterialPageRoute(
@@ -69,43 +68,49 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                                     .then((value) {
                                   setState(() {});
                                 }),
-
-
-
-                              title: Text(snapshot.data![index].name),
+                                title: Text(snapshot.data![index].name),
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(90, 30),
+                        primary: Color(0xFF8a2831),
+                        onPrimary: Colors.white,
+                        side: BorderSide(
+                          color: Color(0xFF8a2831),
+                          width: 0,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed("/projects/add")
+                            .then((_) {
+                          setState(() {});
+                        });
                       },
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(90, 30),
-                      primary: Color(0xFF8a2831),
-                      onPrimary: Colors.white,
-                      side: BorderSide(
-                        color: Color(0xFF8a2831),
-                        width: 0,
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pushNamed("/projects/add");
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "Add",
-                        style: TextStyle(fontSize: 20),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Add",
+                          style: TextStyle(fontSize: 20),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            );
+                ],
+              );
+            } else if (snapshot.hasError) {
+              return const Center(child: Text("Erreur de connexion."));
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
           },
         ),
       ),
