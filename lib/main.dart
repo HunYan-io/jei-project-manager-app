@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
       builder: DevicePreview.appBuilder,
       title: 'JEI Project Manager',
       theme: AppTheme.lightTheme,
+
       home: FutureBuilder(
         future: _authInit,
         builder: (context, snapshot) {

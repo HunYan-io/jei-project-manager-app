@@ -16,8 +16,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   final descriptionController = TextEditingController();
   final membersController = TextEditingController();
   final deadlineController = TextEditingController();
-  final items = ["Web", "Mobile", "Référencement"];
-  final itemsSelected = TextEditingController();
 
   String? value;
   DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
