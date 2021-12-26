@@ -70,6 +70,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
     return BaseAuthScreen(
       children: [
         RoundedTextField(
@@ -83,8 +84,9 @@ class _SignupScreenState extends State<SignupScreen> {
               });
             }
           },
+          textInputAction: TextInputAction.next,
         ),
-        const SizedBox(height: 20.0),
+        SizedBox(height: height / 40),
         RoundedTextField(
           labelText: "Nom d'utilisateur",
           controller: _usernameController,
@@ -96,8 +98,9 @@ class _SignupScreenState extends State<SignupScreen> {
               });
             }
           },
+          textInputAction: TextInputAction.next,
         ),
-        const SizedBox(height: 20.0),
+        SizedBox(height: height / 40),
         RoundedTextField(
           labelText: "Mot de passe",
           controller: _passwordController,
@@ -110,15 +113,16 @@ class _SignupScreenState extends State<SignupScreen> {
               });
             }
           },
+          onSubmitted: (_) => _isLoading ? null : onSignupPressed(),
         ),
-        const SizedBox(height: 40.0),
+        SizedBox(height: height / 20),
         _isLoading
             ? const CircularProgressIndicator()
             : RoundedButton(
                 text: "S'inscrire",
                 onPressed: onSignupPressed,
               ),
-        const SizedBox(height: 20.0),
+        SizedBox(height: height / 40),
         TextButton(
           child: const Text("Vous avez déjà un compte ?"),
           onPressed: _isLoading
