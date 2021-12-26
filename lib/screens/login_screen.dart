@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:jei_project_manager_app/services/auth_service.dart';
 import 'package:jei_project_manager_app/widgets/rounded_button.dart';
@@ -11,6 +9,7 @@ class BaseAuthScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
     return GestureDetector(
       onTap: () {
         final currentFocus = FocusScope.of(context);
@@ -20,24 +19,26 @@ class BaseAuthScreen extends StatelessWidget {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: SafeArea(
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(
-                maxWidth: 400,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 40.0),
-                    const Image(
-                      image: AssetImage("assets/images/logo_junior.png"),
-                      width: 150.0,
-                    ),
-                    const SizedBox(height: 50.0),
-                    ...children,
-                  ],
+        body: SingleChildScrollView(
+          child: SafeArea(
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: 400,
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      vertical: height / 20, horizontal: 30.0),
+                  child: Column(
+                    children: [
+                      const Image(
+                        image: AssetImage("assets/images/logo_junior.png"),
+                        width: 150.0,
+                      ),
+                      SizedBox(height: height / 17),
+                      ...children,
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -104,8 +105,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
     return BaseAuthScreen(
       children: [
+        SizedBox(height: height / 20),
         RoundedTextField(
           labelText: "Nom d'utilisateur",
           controller: _usernameController,
@@ -117,8 +120,9 @@ class _LoginScreenState extends State<LoginScreen> {
               });
             }
           },
+          textInputAction: TextInputAction.next,
         ),
-        const SizedBox(height: 20.0),
+        SizedBox(height: height / 40),
         RoundedTextField(
           labelText: "Mot de passe",
           controller: _passwordController,
@@ -131,15 +135,16 @@ class _LoginScreenState extends State<LoginScreen> {
               });
             }
           },
+          onSubmitted: (_) => _isLoading ? null : onLoginPressed(),
         ),
-        const SizedBox(height: 40.0),
+        SizedBox(height: height / 20),
         _isLoading
             ? const CircularProgressIndicator()
             : RoundedButton(
                 text: "Se connecter",
                 onPressed: onLoginPressed,
               ),
-        const SizedBox(height: 20.0),
+        SizedBox(height: height / 40),
         TextButton(
           child: const Text("Vous n'avez pas de compte ? Créez-en un !"),
           onPressed: _isLoading
