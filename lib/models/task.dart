@@ -20,10 +20,10 @@ class Task {
       project: task["projectId"],
       description: task["description"],
       deadline: DateTime.parse(task["deadline"]),
-      status: task["task"]);
+      status: task["status"]);
 
   Map<String, dynamic> toJson() {
-    final task = {
+    final Map<String, dynamic> task = {
       "name": name,
       "description": description,
       "deadline": deadline.toString(),

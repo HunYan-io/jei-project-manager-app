@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:jei_project_manager_app/models/task.dart';
+import 'package:jei_project_manager_app/services/task_service.dart';
 import 'package:jei_project_manager_app/widgets/input_theme_provider.dart';
 import 'package:jei_project_manager_app/widgets/text_field_widget.dart';
 
@@ -14,10 +16,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   final nameController = TextEditingController();
   final typeController = TextEditingController();
   final descriptionController = TextEditingController();
-  final membersController = TextEditingController();
+  final projectController = TextEditingController();
   final deadlineController = TextEditingController();
 
   String? value;
+
   DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
         value: item,
         child: TextFieldWidget(item, 15),
@@ -30,10 +33,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         initialDate: selectedDate,
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
       });
+    }
   }
 
   Widget build(BuildContext context) {
@@ -54,8 +58,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   showTrackOnHover: true,
                   child: ListView(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.all(8),
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.all(8),
                     children: [
                       TextFieldWidget("Name : ", 20),
                       Padding(
@@ -65,7 +69,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           decoration: InputDecoration(
                             suffixIcon: IconButton(
                               onPressed: () => nameController.clear(),
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.close,
                                 color: Color(0xFF171a33),
                                 size: 20,
@@ -79,11 +83,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       Padding(
                         padding: const EdgeInsets.all(16),
                         child: TextField(
-                          controller: membersController,
+                          controller: projectController,
                           decoration: InputDecoration(
                             suffixIcon: IconButton(
-                              onPressed: () => membersController.clear(),
-                              icon: Icon(
+                              onPressed: () => projectController.clear(),
+                              icon: const Icon(
                                 Icons.close,
                                 color: Color(0xFF171a33),
                                 size: 20,
@@ -106,30 +110,30 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       Padding(
                         padding: const EdgeInsets.all(16),
                         child: Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 4),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
-                                color: Color(0xFF171a33),
+                                color: const Color(0xFF171a33),
                                 width: 1,
                               )),
                           child: Row(
                             children: [
                               Text(
                                 "${selectedDate.toLocal()}".split(' ')[0],
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Color(0xFF171a33),
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 190,
                               ),
                               IconButton(
                                 onPressed: () => _selectDate(context),
-                                icon: Icon(Icons.calendar_today),
+                                icon: const Icon(Icons.calendar_today),
                               ),
                             ],
                           ),
@@ -143,17 +147,29 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size(90, 30),
-                    primary: Color(0xFF8a2831),
+                    minimumSize: const Size(90, 30),
+                    primary: const Color(0xFF8a2831),
                     onPrimary: Colors.white,
-                    side: BorderSide(
+                    side: const BorderSide(
                       color: Color(0xFF8a2831),
                       width: 0.5,
                     ),
                   ),
-                  onPressed: () {},
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  onPressed: () {
+                    Task data = Task(
+                      name: nameController.text,
+                      project: int.parse(projectController.text),
+                      description: descriptionController.text,
+                      deadline: selectedDate,
+                      status: 'to do',
+                    );
+                    TaskServices.postTask(data).then((_) {
+                      Navigator.of(context).pop();
+                    });
+                    print(data.toJson());
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Text(
                       "Add",
                       style: TextStyle(fontSize: 20),
