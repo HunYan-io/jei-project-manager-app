@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jei_project_manager_app/models/project.dart';
 import 'package:jei_project_manager_app/services/projects_service.dart';
 import 'package:jei_project_manager_app/widgets/input_theme_provider.dart';
@@ -191,19 +192,66 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
                 child: RoundedButton(
                   text: "Ajouter",
                   onPressed: () {
-                    Project project = Project(
-                      name: nameController.text,
-                      type: value!,
-                      description: descriptionController.text,
-                      members: membersController.text
-                          .split(",")
-                          .map((name) => name.trim())
-                          .toList(),
-                      deadline: selectedDate,
-                    );
-                    ProjectsService.postProject(project).then((_) {
-                      Navigator.of(context).pop();
-                    });
+                    if (nameController.text.isEmpty) {
+                      Fluttertoast.showToast(
+                          msg: "Veuillez entrer le nom du projet",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color(0xFF8a2831),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else if (value == null) {
+                      Fluttertoast.showToast(
+                          msg: "Un projet doit avoir un type",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color(0xFF8a2831),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else if (descriptionController.text.isEmpty) {
+                      Fluttertoast.showToast(
+                          msg: "Veuillez ajouter une description au projet",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color(0xFF8a2831),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else if (membersController.text.isEmpty) {
+                      Fluttertoast.showToast(
+                          msg: "Veuillez ajouter des membres au projet",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color(0xFF8a2831),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else if (selectedDate.isAtSameMomentAs(DateTime.now())) {
+                      Fluttertoast.showToast(
+                          msg: "Veuillez ajouter une date limite",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color(0xFF8a2831),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else {
+                      Project project = Project(
+                        name: nameController.text,
+                        type: value!,
+                        description: descriptionController.text,
+                        members: membersController.text
+                            .split(",")
+                            .map((name) => name.trim())
+                            .toList(),
+                        deadline: selectedDate,
+                      );
+                      ProjectsService.postProject(project).then((_) {
+                        Navigator.of(context).pop();
+                      });
+                    }
                   },
                   color: Theme.of(context).colorScheme.secondary,
                 ),

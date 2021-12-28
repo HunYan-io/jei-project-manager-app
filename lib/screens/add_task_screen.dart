@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:jei_project_manager_app/models/project.dart';
 import 'package:jei_project_manager_app/models/task.dart';
 import 'package:jei_project_manager_app/services/task_service.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jei_project_manager_app/widgets/input_theme_provider.dart';
 import 'package:jei_project_manager_app/widgets/rounded_button.dart';
 import 'package:jei_project_manager_app/widgets/text_field_widget.dart';
@@ -14,11 +14,9 @@ class AddTaskScreen extends StatefulWidget {
 }
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
-  @override
   final nameController = TextEditingController();
   final typeController = TextEditingController();
   final descriptionController = TextEditingController();
-  final projectController = TextEditingController();
   final deadlineController = TextEditingController();
 
   String? value;
@@ -77,7 +75,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   physics: const NeverScrollableScrollPhysics(),
                   padding: const EdgeInsets.all(8),
                   children: [
-                    TextFieldWidget("Name : ", 20),
+                    TextFieldWidget("Nom : ", 20),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: TextField(
@@ -104,7 +102,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                         textInputAction: TextInputAction.done,
                       ),
                     ),
-                    TextFieldWidget("Deadline : ", 20),
+                    TextFieldWidget("Date limite : ", 20),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: Container(
@@ -143,16 +141,45 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 child: RoundedButton(
                   text: "Ajouter",
                   onPressed: () {
-                    Task data = Task(
-                      name: nameController.text,
-                      project: arguments["project"],
-                      description: descriptionController.text,
-                      deadline: selectedDate,
-                      status: arguments["status"],
-                    );
-                    TaskServices.postTask(data).then((_) {
-                      Navigator.of(context).pop();
-                    });
+                    if (nameController.text.isEmpty) {
+                      Fluttertoast.showToast(
+                          msg: "Veuillez entrer le nom de la tâche",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color(0xFF8a2831),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else if (descriptionController.text.isEmpty) {
+                      Fluttertoast.showToast(
+                          msg: "Veuillez ajouter une description pour la tâche",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color(0xFF8a2831),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else if (selectedDate.isAtSameMomentAs(DateTime.now())) {
+                      Fluttertoast.showToast(
+                          msg: "Veuillez ajouter une date limite",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color(0xFF8a2831),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else {
+                      Task data = Task(
+                        name: nameController.text,
+                        project: arguments["project"],
+                        description: descriptionController.text,
+                        deadline: selectedDate,
+                        status: arguments["status"],
+                      );
+                      TaskServices.postTask(data).then((_) {
+                        Navigator.of(context).pop();
+                      });
+                    }
                   },
                   color: Theme.of(context).colorScheme.secondary,
                 ),

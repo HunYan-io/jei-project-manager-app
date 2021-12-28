@@ -8,7 +8,7 @@ import 'package:jei_project_manager_app/widgets/task_tab.dart';
 import 'package:readmore/readmore.dart';
 
 class TasksScreen extends StatefulWidget {
-  TasksScreen({Key? key}) : super(key: key);
+  const TasksScreen({Key? key}) : super(key: key);
 
   @override
   State<TasksScreen> createState() => _TasksScreenState();

@@ -1,11 +1,10 @@
 import 'package:intl/intl.dart';
 import 'package:jei_project_manager_app/models/project.dart';
 import 'package:jei_project_manager_app/models/task.dart';
-import 'package:jei_project_manager_app/services/task_service.dart';
 import 'package:flutter/material.dart';
 
 class TaskDetails extends StatefulWidget {
-  TaskDetails({Key? key}) : super(key: key);
+  const TaskDetails({Key? key}) : super(key: key);
 
   @override
   State<TaskDetails> createState() => _TaskDetailsState();
