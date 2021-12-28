@@ -1,17 +1,20 @@
 import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 import 'package:jei_project_manager_app/screens/add_project_screen.dart';
+
+import 'package:jei_project_manager_app/screens/add_task_screen.dart';
+import 'package:jei_project_manager_app/screens/login_screen.dart';
 import 'package:jei_project_manager_app/screens/projects_screen.dart';
 import 'package:jei_project_manager_app/screens/signup_screen.dart';
+import 'package:jei_project_manager_app/screens/task_details.dart';
 import 'package:jei_project_manager_app/screens/tasks_screen.dart';
 import 'package:jei_project_manager_app/services/auth_service.dart';
 import 'package:jei_project_manager_app/utilities/theme.dart';
-import 'package:jei_project_manager_app/screens/login_screen.dart';
 
 void main() async {
   runApp(DevicePreview(
-    enabled: true,
+    enabled: kDebugMode,
     builder: (context) => MyApp(), // Wrap your app
   ));
 }
@@ -29,13 +32,12 @@ class MyApp extends StatelessWidget {
       builder: DevicePreview.appBuilder,
       title: 'JEI Project Manager',
       theme: AppTheme.lightTheme,
-
       home: FutureBuilder(
         future: _authInit,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return authService.isLoggedIn
-                ? ProjectsScreen()
+                ? const ProjectsScreen()
                 : const LoginScreen();
           } else if (snapshot.hasError) {
             return const LoginScreen();
@@ -51,9 +53,11 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginScreen(),
         '/signup': (context) => const SignupScreen(),
-        '/tasks': (context) => TasksScreen(),
-        '/projects': (context) => ProjectsScreen(),
-        '/projects/add': (context) => const AddProjectScreen()
+        '/tasks': (context) => const TasksScreen(),
+        '/projects': (context) => const ProjectsScreen(),
+        '/projects/add': (context) => const AddProjectScreen(),
+        '/tasks/add': (context) => const AddTaskScreen(),
+        '/task': (context) => const TaskDetails(),
       },
     );
   }

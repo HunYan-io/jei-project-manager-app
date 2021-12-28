@@ -5,7 +5,7 @@ import 'package:jei_project_manager_app/models/task.dart';
 import 'package:jei_project_manager_app/services/http_service.dart';
 
 class TaskServices {
-  Future<List<Task>> getTasks(int id) async {
+  static Future<List<Task>> getTasks(int id) async {
     final response = await httpService.get(
       Uri.parse(Config.apiURL + "/projects/$id/tasks"),
     );
@@ -18,7 +18,7 @@ class TaskServices {
     }
   }
 
-  Future<bool> postTask(Task task) async {
+  static Future<Task> postTask(Task task) async {
     final response = await httpService.post(
       Uri.parse(
           Config.apiURL + "/projects/" + task.project.toString() + "/tasks"),
@@ -26,13 +26,13 @@ class TaskServices {
     );
     final data = json.decode(response.body) as Map<String, dynamic>;
     if (response.statusCode < 400) {
-      return data["success"];
+      return Task.fromJson(data);
     } else {
       throw Exception(data["message"]);
     }
   }
 
-  Future<bool> deleteTask(int id) async {
+  static Future<bool> deleteTask(int id) async {
     final response = await httpService.delete(
       Uri.parse(Config.apiURL + "/task/$id"),
     );
@@ -44,10 +44,10 @@ class TaskServices {
     }
   }
 
-  Future<bool> updateTask(int id) async {
+  static Future<bool> updateTask(int id, String status) async {
     final response = await httpService.put(
-      Uri.parse(Config.apiURL + "/task/$id"),
-    );
+        Uri.parse(Config.apiURL + "/task/$id"),
+        body: json.encode({'status': status}));
     final data = json.decode(response.body) as Map<String, dynamic>;
     if (response.statusCode < 400) {
       return data["success"];
