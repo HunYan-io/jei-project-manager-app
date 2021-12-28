@@ -18,7 +18,7 @@ class TaskServices {
     }
   }
 
-  Future<bool> postTask(Task task) async {
+  Future<Task> postTask(Task task) async {
     final response = await httpService.post(
       Uri.parse(
           Config.apiURL + "/projects/" + task.project.toString() + "/tasks"),
@@ -26,7 +26,7 @@ class TaskServices {
     );
     final data = json.decode(response.body) as Map<String, dynamic>;
     if (response.statusCode < 400) {
-      return data["success"];
+      return Task.fromJson(data);
     } else {
       throw Exception(data["message"]);
     }

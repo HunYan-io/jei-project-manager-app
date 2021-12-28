@@ -9,6 +9,7 @@ class AuthService {
   var isAdmin = false;
   String? _token;
   final _storage = const FlutterSecureStorage();
+  String? username;
 
   bool get isLoggedIn {
     return _token != null;
@@ -21,6 +22,9 @@ class AuthService {
     }
     if (values.containsKey("is_admin") && values["is_admin"] == "true") {
       isAdmin = true;
+    }
+    if (values.containsKey("username")) {
+      username = values["username"];
     }
     httpService.addHeaders({HttpHeaders.authorizationHeader: 'Bearer $_token'});
     return true;
@@ -39,6 +43,8 @@ class AuthService {
       _storage
           .write(key: "is_admin", value: isAdmin ? "true" : "false")
           .catchError((e) {});
+      _storage.write(key: "username", value: username).catchError((e) {});
+      this.username = username;
       httpService
           .addHeaders({HttpHeaders.authorizationHeader: 'Bearer $_token'});
     } else {
@@ -60,6 +66,8 @@ class AuthService {
       _storage
           .write(key: "is_admin", value: isAdmin ? "true" : "false")
           .catchError((e) {});
+      _storage.write(key: "username", value: username).catchError((e) {});
+      this.username = username;
       httpService
           .addHeaders({HttpHeaders.authorizationHeader: 'Bearer $_token'});
     } else {
