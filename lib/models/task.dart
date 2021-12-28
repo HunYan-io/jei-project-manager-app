@@ -15,12 +15,13 @@ class Task {
       required this.status});
 
   factory Task.fromJson(Map<String, dynamic> task) => Task(
-      id: task["id"],
-      name: task["name"],
-      project: task["projectId"],
-      description: task["description"],
-      deadline: DateTime.parse(task["deadline"]),
-      status: task["status"]);
+        id: task["id"],
+        name: task["name"],
+        project: task["projectId"],
+        description: task["description"],
+        deadline: DateTime.parse(task["deadline"]),
+        status: task["status"],
+      );
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> task = {

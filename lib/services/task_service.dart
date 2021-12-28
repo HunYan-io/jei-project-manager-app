@@ -44,10 +44,10 @@ class TaskServices {
     }
   }
 
-  static Future<bool> updateTask(int id) async {
+  static Future<bool> updateTask(int id, String status) async {
     final response = await httpService.put(
-      Uri.parse(Config.apiURL + "/task/$id"),
-    );
+        Uri.parse(Config.apiURL + "/task/$id"),
+        body: json.encode({'status': status}));
     final data = json.decode(response.body) as Map<String, dynamic>;
     if (response.statusCode < 400) {
       return data["success"];

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jei_project_manager_app/models/project.dart';
 import 'package:jei_project_manager_app/services/projects_service.dart';
 import 'package:jei_project_manager_app/widgets/input_theme_provider.dart';
+import 'package:jei_project_manager_app/widgets/rounded_button.dart';
 import 'package:jei_project_manager_app/widgets/text_field_widget.dart';
 
 class AddProjectScreen extends StatefulWidget {
@@ -48,164 +49,163 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
   Widget build(BuildContext context) {
     return InputThemeProvider(
       child: Scaffold(
-        appBar: AppBar(
-          title: TextFieldWidget("Add project", 30),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-        ),
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Scrollbar(
-                  showTrackOnHover: true,
-                  child: ListView(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.all(8),
-                    children: [
-                      TextFieldWidget("Name : ", 20),
-                      Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: TextField(
-                          controller: nameController,
-                          decoration: InputDecoration(
-                            suffixIcon: IconButton(
-                              onPressed: () => nameController.clear(),
-                              icon: Icon(
-                                Icons.close,
-                                color: Color(0xFF171a33),
-                                size: 20,
-                              ),
-                            ),
-                          ),
-                          textInputAction: TextInputAction.done,
-                        ),
-                      ),
-                      TextFieldWidget("Type : ", 20),
-                      Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(
-                                color: Color(0xFF171a33),
-                                width: 1,
-                              )),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              isExpanded: true,
-                              value: value,
-                              items: items.map(buildMenuItem).toList(),
-                              onChanged: (value) =>
-                                  setState(() => this.value = value),
-                              iconSize: 36,
-                              icon: Icon(
-                                Icons.arrow_drop_down,
-                                color: Color(0xFF171a33),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      TextFieldWidget("Description : ", 20),
-                      Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: TextFormField(
-                          maxLines: 3,
-                          controller: descriptionController,
-                          textInputAction: TextInputAction.done,
-                        ),
-                      ),
-                      TextFieldWidget("Members : ", 20),
-                      Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: TextField(
-                          controller: membersController,
-                          decoration: InputDecoration(
-                            suffixIcon: IconButton(
-                              onPressed: () => membersController.clear(),
-                              icon: Icon(
-                                Icons.close,
-                                color: Color(0xFF171a33),
-                                size: 20,
-                              ),
-                            ),
-                          ),
-                          textInputAction: TextInputAction.done,
-                        ),
-                      ),
-                      TextFieldWidget("Deadline : ", 20),
-                      Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(
-                                color: Color(0xFF171a33),
-                                width: 1,
-                              )),
-                          child: Row(
-                            children: [
-                              Text(
-                                "${selectedDate.toLocal()}".split(' ')[0],
-                                style: TextStyle(
-                                  color: Color(0xFF171a33),
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 190,
-                              ),
-                              IconButton(
-                                onPressed: () => _selectDate(context),
-                                icon: Icon(Icons.calendar_today),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+              SizedBox(height: MediaQuery.of(context).padding.top),
+              Row(
+                children: [
+                  const SizedBox(width: 10.0),
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
+                  const SizedBox(width: 10.0),
+                  Text(
+                    "Ajouter un projet",
+                    style: Theme.of(context).textTheme.headline5!.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 10.0, horizontal: 20.0),
+                child: ListView(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.all(8),
+                  children: [
+                    TextFieldWidget("Nom : ", 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: TextField(
+                        controller: nameController,
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            onPressed: () => nameController.clear(),
+                            icon: Icon(
+                              Icons.close,
+                              color: Color(0xFF171a33),
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                        textInputAction: TextInputAction.done,
+                      ),
+                    ),
+                    TextFieldWidget("Type : ", 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: Color(0xFF171a33),
+                              width: 1,
+                            )),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            isExpanded: true,
+                            value: value,
+                            items: items.map(buildMenuItem).toList(),
+                            onChanged: (value) =>
+                                setState(() => this.value = value),
+                            iconSize: 36,
+                            icon: Icon(
+                              Icons.arrow_drop_down,
+                              color: Color(0xFF171a33),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    TextFieldWidget("Description : ", 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: TextFormField(
+                        maxLines: 3,
+                        controller: descriptionController,
+                        textInputAction: TextInputAction.done,
+                      ),
+                    ),
+                    TextFieldWidget("Membres : ", 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: TextField(
+                        controller: membersController,
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            onPressed: () => membersController.clear(),
+                            icon: Icon(
+                              Icons.close,
+                              color: Color(0xFF171a33),
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                        textInputAction: TextInputAction.done,
+                      ),
+                    ),
+                    TextFieldWidget("Date limite : ", 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: Color(0xFF171a33),
+                              width: 1,
+                            )),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "${selectedDate.toLocal()}".split(' ')[0],
+                              style: TextStyle(
+                                color: Color(0xFF171a33),
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () => _selectDate(context),
+                              icon: Icon(Icons.calendar_today),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(90, 30),
-                    primary: Color(0xFF8a2831),
-                    onPrimary: Colors.white,
-                    side: BorderSide(
-                      color: Color(0xFF8a2831),
-                      width: 0.5,
-                    ),
-                  ),
+                child: RoundedButton(
+                  text: "Ajouter",
                   onPressed: () {
                     Project project = Project(
                       name: nameController.text,
                       type: value!,
                       description: descriptionController.text,
-                      members: membersController.text.split(","),
+                      members: membersController.text
+                          .split(",")
+                          .map((name) => name.trim())
+                          .toList(),
                       deadline: selectedDate,
                     );
                     ProjectsService.postProject(project).then((_) {
                       Navigator.of(context).pop();
                     });
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "Add",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ),
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
             ],
