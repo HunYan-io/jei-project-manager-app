@@ -6,6 +6,8 @@ class RoundedTextField extends StatelessWidget {
   final TextEditingController? controller;
   final bool obscureText;
   final void Function(String)? onChanged;
+  final TextInputAction? textInputAction;
+  final void Function(String)? onSubmitted;
   const RoundedTextField({
     Key? key,
     this.labelText,
@@ -13,6 +15,8 @@ class RoundedTextField extends StatelessWidget {
     this.errorText,
     this.obscureText = false,
     this.onChanged,
+    this.textInputAction,
+    this.onSubmitted,
   }) : super(key: key);
 
   @override
@@ -29,6 +33,8 @@ class RoundedTextField extends StatelessWidget {
       controller: controller,
       obscureText: obscureText,
       onChanged: onChanged,
+      textInputAction: textInputAction,
+      onSubmitted: onSubmitted,
     );
   }
 }

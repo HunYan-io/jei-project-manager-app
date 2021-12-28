@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jei_project_manager_app/models/task.dart';
+import 'package:jei_project_manager_app/services/task_service.dart';
+import 'package:jei_project_manager_app/utilities/theme.dart';
 import 'package:jei_project_manager_app/widgets/input_theme_provider.dart';
 import 'package:jei_project_manager_app/widgets/text_field_widget.dart';
 
@@ -16,8 +20,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   final descriptionController = TextEditingController();
   final membersController = TextEditingController();
   final deadlineController = TextEditingController();
-  final items = ["Web", "Mobile", "Référencement"];
-  final itemsSelected = TextEditingController();
 
   String? value;
   DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
@@ -153,7 +155,38 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       width: 0.5,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    if (nameController.text.isEmpty) {
+                      Fluttertoast.showToast(
+                          msg: "Veuillez entrer le nom de la tâche",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color(0xFF8a2831),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else if (descriptionController.text.isEmpty) {
+                      Fluttertoast.showToast(
+                          msg: "Veuillez ajouter une description pour la tâche",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color(0xFF8a2831),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else if (selectedDate.isAtSameMomentAs(DateTime.now())) {
+                      Fluttertoast.showToast(
+                          msg: "Veuillez ajouter une date limite",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color(0xFF8a2831),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else {
+                      /**To Do */
+                    }
+                  },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(

@@ -5,7 +5,7 @@ import 'package:jei_project_manager_app/models/project.dart';
 import 'package:jei_project_manager_app/services/http_service.dart';
 
 class ProjectsService {
-  Future<List<Project>> getProjects() async {
+  static Future<List<Project>> getProjects() async {
     final response = await httpService.get(
       Uri.parse(Config.apiURL + "/projects"),
     );
@@ -18,7 +18,7 @@ class ProjectsService {
     }
   }
 
-  Future<bool> postProject(Project project) async {
+  static Future<bool> postProject(Project project) async {
     final response = await httpService.post(
       Uri.parse(Config.apiURL + "/projects"),
       body: json.encode(project.toJson()),
@@ -31,7 +31,7 @@ class ProjectsService {
     }
   }
 
-  Future<bool> deleteProject(int id) async {
+  static Future<bool> deleteProject(int id) async {
     final response = await httpService.delete(
       Uri.parse(Config.apiURL + "/projects/$id"),
     );
@@ -43,5 +43,3 @@ class ProjectsService {
     }
   }
 }
-
-final projectsService = ProjectsService();

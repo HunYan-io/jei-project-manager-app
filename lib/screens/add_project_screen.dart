@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jei_project_manager_app/models/project.dart';
+import 'package:jei_project_manager_app/services/projects_service.dart';
 import 'package:jei_project_manager_app/widgets/input_theme_provider.dart';
 import 'package:jei_project_manager_app/widgets/text_field_widget.dart';
 
@@ -16,10 +19,15 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
   final descriptionController = TextEditingController();
   final membersController = TextEditingController();
   final deadlineController = TextEditingController();
-  final items = ["Web", "Mobile", "Référencement"];
+  final items = [
+    "Développement Web",
+    "Développement Mobile",
+    "Référencement Web"
+  ];
   final itemsSelected = TextEditingController();
 
   String? value;
+
   DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
         value: item,
         child: TextFieldWidget(item, 15),
@@ -180,7 +188,66 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
                       width: 0.5,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    print(value);
+                    if (nameController.text.isEmpty) {
+                      Fluttertoast.showToast(
+                          msg: "Veuillez entrer le nom du projet",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color(0xFF8a2831),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else if (value == null) {
+                      Fluttertoast.showToast(
+                          msg: "Un projet doit avoir un type",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color(0xFF8a2831),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else if (descriptionController.text.isEmpty) {
+                      Fluttertoast.showToast(
+                          msg: "Veuillez ajouter une description au projet",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color(0xFF8a2831),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else if (membersController.text.isEmpty) {
+                      Fluttertoast.showToast(
+                          msg: "Veuillez ajouter des membres au projet",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color(0xFF8a2831),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else if (selectedDate.isAtSameMomentAs(DateTime.now())) {
+                      Fluttertoast.showToast(
+                          msg: "Veuillez ajouter une date limite",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color(0xFF8a2831),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else {
+                      Project project = Project(
+                        name: nameController.text,
+                        type: value!,
+                        description: descriptionController.text,
+                        members: membersController.text.split(","),
+                        deadline: selectedDate,
+                      );
+                      ProjectsService.postProject(project).then((_) {
+                        Navigator.of(context).pop();
+                      });
+                    }
+                  },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
