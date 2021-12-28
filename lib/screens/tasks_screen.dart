@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jei_project_manager_app/models/Task.dart';
+import 'package:jei_project_manager_app/models/task.dart';
 import 'package:jei_project_manager_app/services/auth_service.dart';
 import 'package:jei_project_manager_app/widgets/task_tab.dart';
 
@@ -8,34 +8,40 @@ class TasksScreen extends StatelessWidget {
 
   List<Task> data = [
     Task(
-        name: 'task1',
-        project: "project",
-        description: "description",
-        deadline: "deadline"),
+      name: 'task1',
+      project: 0,
+      description: "description",
+      deadline: DateTime.now(),
+      status: "to do",
+    ),
     Task(
-        name: 'task2',
-        project: "project",
-        description: "description",
-        deadline: "deadline"),
+      name: 'task2',
+      project: 0,
+      description: "description",
+      deadline: DateTime.now(),
+      status: "to do",
+    ),
     Task(
-        name: 'task3',
-        project: "project",
-        description: "description",
-        deadline: "deadline"),
+      name: 'task3',
+      project: 0,
+      description: "description",
+      deadline: DateTime.now(),
+      status: "to do",
+    ),
   ];
   @override
   Widget build(BuildContext context) => DefaultTabController(
         length: 3,
         child: Scaffold(
           appBar: AppBar(
-            title: Text('Tasks'),
+            title: const Text('Tasks'),
             centerTitle: true,
-            backgroundColor: Color(0xff171a33),
+            backgroundColor: const Color(0xff171a33),
             leading: IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back),
               onPressed: () {},
             ),
-            bottom: TabBar(tabs: [
+            bottom: const TabBar(tabs: [
               Tab(
                 text: 'to do ',
               ),
