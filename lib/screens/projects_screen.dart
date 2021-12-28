@@ -4,6 +4,7 @@ import 'package:jei_project_manager_app/models/project.dart';
 import 'package:jei_project_manager_app/screens/add_project_screen.dart';
 import 'package:jei_project_manager_app/services/auth_service.dart';
 import 'package:jei_project_manager_app/services/projects_service.dart';
+import 'package:jei_project_manager_app/widgets/delete_dialog.dart';
 
 class ProjectsScreen extends StatefulWidget {
   ProjectsScreen({Key? key}) : super(key: key);
@@ -100,11 +101,21 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                           child: ListTile(
                             trailing: IconButton(
                                 onPressed: () {
-                                  ProjectsService.deleteProject(
-                                          snapshot.data![index].id!)
-                                      .then((value) {
-                                    setState(() {});
-                                  });
+                                  showDialog(
+                                    context: context,
+                                    barrierDismissible:
+                                        false, // user must tap button!
+                                    builder: (BuildContext context) {
+                                      return DeleteDialog(onApprove: () {
+                                        ProjectsService.deleteProject(
+                                                snapshot.data![index].id!)
+                                            .then((value) {
+                                          setState(() {});
+                                          Navigator.of(context).pop();
+                                        });
+                                      });
+                                    },
+                                  );
                                 },
                                 icon: Icon(
                                   Icons.close,

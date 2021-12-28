@@ -7,58 +7,31 @@ import 'package:jei_project_manager_app/services/task_service.dart';
 import 'package:jei_project_manager_app/widgets/task_tab.dart';
 import 'package:readmore/readmore.dart';
 
-class TasksScreen extends StatelessWidget {
+class TasksScreen extends StatefulWidget {
   TasksScreen({Key? key}) : super(key: key);
 
-  List<Task> data = [
-    Task(
-      name: 'task1',
-      project: 3,
-      description: "description",
-      deadline: DateTime.now(),
-      status: "to do",
-    ),
-    Task(
-      name: 'task2',
-      project: 0,
-      description: "description",
-      deadline: DateTime.now(),
-      status: "to do",
-    ),
-    Task(
-      name: 'task3',
-      project: 0,
-      description: "description",
-      deadline: DateTime.now(),
-      status: "to do",
-    ),
-  ];
+  @override
+  State<TasksScreen> createState() => _TasksScreenState();
+}
 
-  final project = Project(
-      name: "Jei project manager app",
-      type: "Développement Mobile",
-      description:
-          "A project management app that allows users to see and add projects. Each project has a list of tasks labeled as todo, doing or done.",
-      members: [
-        "Heni Yengui",
-        "Tayaa Ayachi",
-        "Imen Kaabachi",
-        "Hana Ben Asker"
-      ],
-      deadline: DateTime.now());
-
+class _TasksScreenState extends State<TasksScreen> {
   final _tabNames = ["to do", "doing", "done"];
+
+  var _selectedStatus = "to do";
 
   @override
   Widget build(BuildContext context) {
-    // final project = ModalRoute.of(context)!.settings.arguments as Project;
+    final project = ModalRoute.of(context)!.settings.arguments as Project;
     return Scaffold(
       floatingActionButton: authService.isAdmin
           ? FloatingActionButton(
               onPressed: () {
-                Navigator.of(context).pushNamed("/tasks/add").then((_) => {
-                      // setState(() {});
-                    });
+                Navigator.of(context).pushNamed("/tasks/add", arguments: {
+                  "status": _selectedStatus,
+                  "project": project.id
+                }).then((_) {
+                  setState(() {});
+                });
               },
               child: const Icon(Icons.add),
               backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -258,6 +231,9 @@ class TasksScreen extends StatelessWidget {
                               Theme.of(context).textTheme.button!.copyWith(
                                     fontWeight: FontWeight.w600,
                                   ),
+                          onTap: (index) {
+                            _selectedStatus = _tabNames[index];
+                          },
                           tabs: [
                             for (final tabName in _tabNames)
                               Tab(
@@ -290,18 +266,37 @@ class TasksScreen extends StatelessWidget {
             SliverFillRemaining(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: TabBarView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    for (final tabName in _tabNames)
-                      TaskTab(
-                        tasks: data,
-                        location: tabName,
-                        moveToStatus:
-                            _tabNames.where((name) => name != tabName).toList(),
-                        admin: authService.isAdmin,
-                      ),
-                  ],
+                child: FutureBuilder<List<Task>>(
+                  future: TaskServices.getTasks(project.id!),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<Task>> snapshot) {
+                    if (snapshot.hasData) {
+                      return TabBarView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: [
+                          for (final tabName in _tabNames)
+                            TaskTab(
+                              tasks: snapshot.data!
+                                  .where((task) => task.status == tabName)
+                                  .toList(),
+                              location: tabName,
+                              moveToStatus: _tabNames
+                                  .where((name) => name != tabName)
+                                  .toList(),
+                              admin: authService.isAdmin,
+                              project: project,
+                              onUpdate: () {
+                                setState(() {});
+                              },
+                            ),
+                        ],
+                      );
+                    } else if (snapshot.hasError) {
+                      return const Center(child: Text("Erreur de connexion."));
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  },
                 ),
               ),
             ),
